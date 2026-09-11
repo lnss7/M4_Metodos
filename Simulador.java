@@ -160,37 +160,30 @@ public class Simulador {
     }
 
     public static void imprimirRelatorio(ResultadoSimulacao res) {
-        System.out.println("=================================================================");
-        System.out.println(" SIMULAÇÃO: " + res.config + " (Chegadas: " + res.chegadas + ", Atendimento: " + res.atendimento + ")");
-        System.out.println("=================================================================");
-        System.out.printf("Tempo Global da Simulação : %.4f%n", res.tempoGlobal);
-        System.out.printf("Número de Perdas          : %d%n", res.perdas);
-        System.out.printf("Aleatórios Utilizados     : %d%n", res.aleatoriosUsados);
-        System.out.println("-----------------------------------------------------------------");
-        System.out.printf("%-8s%-20s%-20s%n", "Estado", "Tempo Acumulado", "Probabilidade (%)");
-        System.out.println("-----------------------------------------------------------------");
-        double totalTempo = 0.0;
-        double totalProb = 0.0;
+        System.out.println("*********************************************************");
+        System.out.println("Queue:   Q1 (" + res.config + ")");
+        System.out.println("Arrival: " + res.chegadas.replace("[", "").replace("]", "").replace("..", " ... "));
+        System.out.println("Service: " + res.atendimento.replace("[", "").replace("]", "").replace("..", " ... "));
+        System.out.println("*********************************************************");
+        System.out.printf("%8s%19s%26s%n", "State", "Time", "Probability");
         for (int i = 0; i < res.times.length; i++) {
-            System.out.printf("%-8d%-20.4f%-20.2f%%%n", i, res.times[i], res.probabilidades[i] * 100.0);
-            totalTempo += res.times[i];
-            totalProb += res.probabilidades[i];
+            System.out.printf("%7d%21.4f%21.2f%%%n", i, res.times[i], res.probabilidades[i] * 100.0);
         }
-        System.out.println("-----------------------------------------------------------------");
-        System.out.printf("%-8s%-20.4f%-20.2f%%%n%n", "Total", totalTempo, totalProb * 100.0);
+        System.out.println();
+        System.out.printf("Number of losses: %d%n%n", res.perdas);
+        System.out.println("=========================================================");
+        System.out.printf("Simulation average time: %.4f%n", res.tempoGlobal);
+        System.out.println("=========================================================");
+        System.out.println();
     }
 
     public static void main(String[] args) {
-        System.out.println("=================================================================");
-        System.out.println(" 1. G/G/1/5, chegadas entre 2...5, atendimento entre 3...5");
-        System.out.println("=================================================================");
-        ResultadoSimulacao res1 = simular(1, 5, 2.0, 5.0, 3.0, 5.0, 3.0, 100000, 1L);
+        // Cenário 1: G/G/1/5 (Chegadas: 3.0 ... 5.0, Atendimento: 4.0 ... 5.0)
+        ResultadoSimulacao res1 = simular(1, 5, 3.0, 5.0, 4.0, 5.0, 3.0, 100000, 1L);
         imprimirRelatorio(res1);
 
-        System.out.println("=================================================================");
-        System.out.println(" 2. G/G/2/5, chegadas entre 2...5, atendimento entre 3...5");
-        System.out.println("=================================================================");
-        ResultadoSimulacao res2 = simular(2, 5, 2.0, 5.0, 3.0, 5.0, 3.0, 100000, 1L);
+        // Cenário 2: G/G/2/5 (Chegadas: 3.0 ... 5.0, Atendimento: 4.0 ... 5.0)
+        ResultadoSimulacao res2 = simular(2, 5, 3.0, 5.0, 4.0, 5.0, 3.0, 100000, 1L);
         imprimirRelatorio(res2);
     }
 }
